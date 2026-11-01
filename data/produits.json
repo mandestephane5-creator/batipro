@@ -1,0 +1,119 @@
+[
+  {
+    "id": 1,
+    "slug": "toro-valor-160",
+    "nom": "Toro Valor 160",
+    "marque": "Toro",
+    "rayon": "motos",
+    "prix": 628500,
+    "ancienPrix": null,
+    "dispo": "commande",
+    "promo": false,
+    "nouveau": false,
+    "vedette": true,
+    "couleurs": [
+      {
+        "nom": "Noir mat",
+        "hex": "#1F2023"
+      },
+      {
+        "nom": "Bleu mat",
+        "hex": "#2D4A6B"
+      },
+      {
+        "nom": "Gris",
+        "hex": "#8B9096"
+      }
+    ],
+    "photos": [],
+    "desc": "Moto Toro Valor 160, proposée en noir mat, bleu mat et gris. Disponible sur commande chez Bâti-Pro à Koulouba : réservez la vôtre sur WhatsApp ou au magasin.",
+    "specs": {
+      "Modèle": "Valor 160"
+    },
+    "visible": true
+  },
+  {
+    "id": 2,
+    "slug": "azur-smart-tv-43-pouces",
+    "nom": "AZUR Smart TV 43 pouces",
+    "marque": "AZUR",
+    "rayon": "electronique",
+    "prix": 105000,
+    "ancienPrix": null,
+    "dispo": "disponible",
+    "promo": true,
+    "nouveau": false,
+    "vedette": false,
+    "couleurs": [],
+    "photos": [],
+    "desc": "Téléviseur connecté AZUR de 43 pouces : applications, vidéos en ligne et chaînes, pour le salon ou la chambre.",
+    "specs": {
+      "Écran": "43 pouces",
+      "Type": "Smart TV"
+    },
+    "visible": true
+  },
+  {
+    "id": 3,
+    "slug": "azur-smart-tv-55-pouces",
+    "nom": "AZUR Smart TV 55 pouces",
+    "marque": "AZUR",
+    "rayon": "electronique",
+    "prix": 150000,
+    "ancienPrix": null,
+    "dispo": "disponible",
+    "promo": true,
+    "nouveau": false,
+    "vedette": false,
+    "couleurs": [],
+    "photos": [],
+    "desc": "Téléviseur connecté AZUR de 55 pouces, un grand écran pour le salon, avec applications et vidéos en ligne.",
+    "specs": {
+      "Écran": "55 pouces",
+      "Type": "Smart TV"
+    },
+    "visible": true
+  },
+  {
+    "id": 4,
+    "slug": "azur-smart-tv-75-pouces",
+    "nom": "AZUR Smart TV 75 pouces",
+    "marque": "AZUR",
+    "rayon": "electronique",
+    "prix": 295000,
+    "ancienPrix": null,
+    "dispo": "disponible",
+    "promo": true,
+    "nouveau": false,
+    "vedette": false,
+    "couleurs": [],
+    "photos": [],
+    "desc": "Téléviseur connecté AZUR de 75 pouces, pour un vrai effet cinéma à la maison ou dans une salle de réunion.",
+    "specs": {
+      "Écran": "75 pouces",
+      "Type": "Smart TV"
+    },
+    "visible": true
+  },
+  {
+    "id": 5,
+    "slug": "televiseur-webos-85-pouces",
+    "nom": "Téléviseur WebOS 85 pouces",
+    "marque": "",
+    "rayon": "electronique",
+    "prix": 350000,
+    "ancienPrix": null,
+    "dispo": "disponible",
+    "promo": true,
+    "nouveau": false,
+    "vedette": false,
+    "couleurs": [],
+    "photos": [],
+    "desc": "Très grand téléviseur de 85 pouces sous WebOS, avec applications et vidéos en ligne, pour les grands salons et les espaces professionnels.",
+    "specs": {
+      "Écran": "85 pouces",
+      "Système": "WebOS"
+    },
+    "visible": true
+  }
+]

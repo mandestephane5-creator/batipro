@@ -1,0 +1,13 @@
+# Ne jamais envoyer sur GitHub (le dépôt est public)
+server/
+dashboard*.html
+data/config.json
+*.env
+.env*
+*.key
+*.pem
+node_modules/
+_orig/
+*.zip
+Thumbs.db
+.DS_Store

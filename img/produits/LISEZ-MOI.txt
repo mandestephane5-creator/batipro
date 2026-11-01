@@ -1,0 +1,28 @@
+Photos des articles — une photo par produit, au format JPG, nommée exactement comme ci-dessous.
+Conseils : fond neutre, bonne lumière, format portrait 4:5 (ex. 900 x 1125 px), moins de 250 Ko.
+Pour un autre nom ou format, indiquez image: "img/produits/mon-fichier.webp" dans products.js.
+
+moto-toro-valor-160.jpg   <- Toro Valor 160
+moto-sanili-125.jpg   <- Sanili 125 Classic
+moto-apsonic-115.jpg   <- Apsonic 115 Eco
+casque-moto-integral.jpg   <- Casque moto intégral
+ciment-cpj-45-sac-50kg.jpg   <- Ciment CPJ 45 — sac de 50 kg
+fer-a-beton-12mm.jpg   <- Fer à béton HA 12 mm (barre de 12 m)
+tole-bac-alu-3m.jpg   <- Tôle bac aluminium 3 m
+brouette-chantier-90l.jpg   <- Brouette de chantier 90 L
+televiseur-led-43-smart.jpg   <- Téléviseur LED 43" Smart TV
+smartphone-android-128go.jpg   <- Smartphone Android 128 Go
+enceinte-bluetooth-karaoke.jpg   <- Enceinte Bluetooth karaoké
+decodeur-tnt-hd.jpg   <- Décodeur TNT HD
+climatiseur-split-12000-btu.jpg   <- Climatiseur split 12 000 BTU
+climatiseur-split-18000-btu.jpg   <- Climatiseur split 18 000 BTU
+ventilateur-sur-pied-rechargeable.jpg   <- Ventilateur sur pied rechargeable
+refroidisseur-air-40l.jpg   <- Refroidisseur d'air 40 L
+kit-solaire-eclairage-recharge.jpg   <- Kit solaire éclairage + recharge
+panneau-solaire-300w.jpg   <- Panneau solaire 300 W monocristallin
+batterie-solaire-gel-200ah.jpg   <- Batterie solaire gel 200 Ah
+onduleur-hybride-3kva.jpg   <- Onduleur hybride 3 kVA
+groupe-electrogene-5kva.jpg   <- Groupe électrogène 5 kVA essence
+pompe-a-eau-immergee-1cv.jpg   <- Pompe à eau immergée 1 CV
+refrigerateur-congelateur-250l.jpg   <- Réfrigérateur-congélateur 250 L
+poste-a-souder-250a.jpg   <- Poste à souder 250 A

@@ -1,0 +1,52 @@
+# Envoie le site chez votre hébergeur (Hostoweb, Hostinger…) après chaque publication (admin ou git push).
+#
+# Réglages, une seule fois, dans GitHub : Settings > Secrets and variables > Actions
+#   Onglet « Secrets »   : FTP_UTILISATEUR, FTP_MOT_DE_PASSE  (donnés par l'hébergeur, gardés chiffrés)
+#   Onglet « Variables » : FTP_SERVEUR    (obligatoire, ex. ftp.batipro.bf)
+#                          FTP_DOSSIER    (facultatif, par défaut public_html/)
+#                          FTP_PROTOCOLE  (facultatif, par défaut ftps ; mettre ftp seulement si l'hébergeur n'a pas FTPS)
+#                          FTP_PORT       (facultatif, par défaut 21)
+#                          FTP_SECURITE   (facultatif, par défaut strict ; loose si l'hébergeur utilise un certificat FTP non reconnu)
+# Tant que FTP_SERVEUR n'est pas rempli, rien n'est envoyé (le site reste servi par GitHub Pages).
+
+name: Envoi vers l'hébergeur
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: envoi-hebergeur
+  cancel-in-progress: false
+
+jobs:
+  envoyer:
+    if: ${{ vars.FTP_SERVEUR != '' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Récupérer le site
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+        with:
+          persist-credentials: false
+
+      - name: Envoyer les fichiers modifiés chez l'hébergeur
+        uses: SamKirkland/FTP-Deploy-Action@a51268f67f6605236975928ae28b0f7e9971d50a # v4.3.6
+        with:
+          server: ${{ vars.FTP_SERVEUR }}
+          username: ${{ secrets.FTP_UTILISATEUR }}
+          password: ${{ secrets.FTP_MOT_DE_PASSE }}
+          protocol: ${{ vars.FTP_PROTOCOLE || 'ftps' }}
+          port: ${{ vars.FTP_PORT || 21 }}
+          server-dir: ${{ vars.FTP_DOSSIER || 'public_html/' }}
+          security: ${{ vars.FTP_SECURITE || 'strict' }}
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            .github/**
+            *.md

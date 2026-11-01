@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Bâti-Pro — Gestion des articles</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#17191C">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-twp8kjoHxycyDZ7wcA+anHV9tU1jVgly2TKesAmxS6Y='; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src https://cdnjs.cloudflare.com https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://api.github.com; base-uri 'none'; form-action 'none'; object-src 'none'">
+  <meta name="referrer" content="no-referrer">
+  <style id="antiCadre">html{display:none!important}</style>
+  <script>if(window.top===window.self){var c=document.getElementById('antiCadre');c.parentNode.removeChild(c)}else{try{window.top.location.replace(window.location.href)}catch(e){}}try{var t=localStorage.getItem('bp-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+  <link rel="icon" type="image/png" sizes="32x32" href="img/icons/favicon-32.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders:wght@700;800;900&amp;family=Instrument+Sans:wght@400;500;600;700&amp;display=swap">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+<!-- ===================== CONNEXION ===================== -->
+<section class="login" id="login">
+  <div class="login-card">
+    <div class="brand-plaque"><b>BÂTI PRO</b><small>ADMINISTRATION</small></div>
+    <p class="login-sub">Gestion des articles et des prix</p>
+
+    <form id="loginForm" autocomplete="off">
+      <div class="repo-line" id="repoLine">
+        <i class="fab fa-github"></i>
+        <span>Dépôt : <b id="repoLabel">—</b></span>
+        <button type="button" class="link" id="repoEdit">Modifier</button>
+      </div>
+      <div class="repo-fields" id="repoFields" hidden>
+        <label class="fld"><span>Compte GitHub</span><input id="inOwner" placeholder="mandestephane5-creator" spellcheck="false" autocomplete="off"></label>
+        <label class="fld"><span>Nom du dépôt</span><input id="inRepo" placeholder="batipro" spellcheck="false" autocomplete="off"></label>
+      </div>
+
+      <label class="fld">
+        <span>Clé d'accès GitHub</span>
+        <input id="inToken" class="secret" type="text" placeholder="Collez la clé ici (ghp_…)" spellcheck="false" autocomplete="off" autocapitalize="off" autocorrect="off" data-lpignore="true" data-1p-ignore data-bwignore data-form-type="other" required>
+        <small class="secret-note"><i class="fas fa-eye-slash"></i> La clé reste masquée et ne sera plus jamais affichée.</small>
+      </label>
+
+      <div class="lock-set">
+        <label class="fld">
+          <span>Code de verrouillage de l'admin</span>
+          <div class="pw">
+            <input id="inCode" class="secret" type="text" maxlength="64" placeholder="6 caractères minimum" spellcheck="false" autocomplete="off" autocapitalize="off" data-lpignore="true" data-1p-ignore data-bwignore required>
+            <button type="button" class="pw-eye" data-eye="inCode" aria-label="Afficher le code"><i class="fas fa-eye"></i></button>
+          </div>
+        </label>
+        <label class="fld"><span>Confirmez le code</span><input id="inCode2" class="secret" type="text" maxlength="64" spellcheck="false" autocomplete="off" autocapitalize="off" data-lpignore="true" data-1p-ignore data-bwignore required></label>
+        <p class="lock-note"><i class="fas fa-shield-halved"></i> Ce code vous sera demandé sur cet appareil à chaque ouverture de l'admin et après 10 minutes sans activité. Sans lui, la clé GitHub enregistrée reste illisible.</p>
+      </div>
+
+      <label class="check"><input type="checkbox" id="inRemember" checked><span>Rester connecté sur cet appareil</span></label>
+
+      <p class="err" id="loginErr" hidden></p>
+      <button class="btn btn-red btn-block" type="submit" id="loginBtn"><i class="fas fa-right-to-bracket"></i> Se connecter</button>
+    </form>
+
+    <details class="help">
+      <summary><i class="fas fa-circle-question"></i> Comment obtenir ma clé ?</summary>
+      <ol>
+        <li>Connecté à votre compte, ouvrez <b>github.com/settings/tokens/new</b>.</li>
+        <li><b>Note</b> : « Bâti-Pro admin ». <b>Expiration</b> : <i>Custom</i>, dans un an.</li>
+        <li>Dans <b>Select scopes</b>, cochez uniquement <b>public_repo</b> (ou <b>repo</b> si le dépôt est privé).</li>
+        <li>Cliquez <b>Generate token</b>, copiez la clé et collez-la ci-dessus.</li>
+      </ol>
+      <p class="help-note">Une clé par personne : chaque vendeur crée la sienne avec son propre compte GitHub, ajouté au dépôt dans Settings, puis Collaborators. Gardez votre clé secrète et supprimez-la sur GitHub en cas de perte.</p>
+    </details>
+  </div>
+</section>
+
+<!-- ===================== VERROUILLAGE ===================== -->
+<section class="login lock" id="lock" hidden>
+  <div class="login-card">
+    <div class="lock-ico"><i class="fas fa-lock"></i></div>
+    <h2 class="lock-title" id="lockTitle">Admin verrouillé</h2>
+    <p class="login-sub" id="lockSub">Entrez votre code de verrouillage pour continuer.</p>
+    <form id="lockForm" autocomplete="off">
+      <label class="fld">
+        <span>Code de verrouillage</span>
+        <div class="pw">
+          <input id="inUnlock" class="secret" type="text" maxlength="64" spellcheck="false" autocomplete="off" autocapitalize="off" data-lpignore="true" data-1p-ignore data-bwignore required>
+          <button type="button" class="pw-eye" data-eye="inUnlock" aria-label="Afficher le code"><i class="fas fa-eye"></i></button>
+        </div>
+      </label>
+      <label class="fld" id="lockCode2" hidden><span>Confirmez le code</span><input id="inUnlock2" class="secret" type="text" maxlength="64" spellcheck="false" autocomplete="off" autocapitalize="off" data-lpignore="true" data-1p-ignore data-bwignore></label>
+      <p class="err" id="lockErr" hidden></p>
+      <button class="btn btn-red btn-block" type="submit" id="unlockBtn"><i class="fas fa-unlock"></i> Déverrouiller</button>
+    </form>
+    <button type="button" class="link lock-forgot" id="lockForgot">Code oublié ? Se reconnecter avec la clé GitHub</button>
+  </div>
+</section>
+
+<!-- ===================== APPLICATION ===================== -->
+<div class="app" id="app" hidden>
+  <header class="top">
+    <div class="brand-plaque petit"><b>BÂTI PRO</b><small>ADMIN</small></div>
+    <div class="top-r">
+      <span class="sync" id="sync" hidden></span>
+      <button class="ib" id="seoBtn" title="Réglages de la boutique" aria-label="Réglages de la boutique et de Google"><i class="fas fa-sliders"></i></button>
+      <button class="ib" id="themeBtn" title="Mode clair / sombre" aria-label="Mode clair ou sombre"><i class="fas fa-circle-half-stroke"></i></button>
+      <a class="ib" href="./" target="_blank" rel="noopener" title="Voir le site" aria-label="Voir le site"><i class="fas fa-store"></i></a>
+      <button class="ib" id="lockBtn" title="Verrouiller l'admin" aria-label="Verrouiller l'admin"><i class="fas fa-lock"></i></button>
+      <button class="ib" id="logoutBtn" title="Se déconnecter" aria-label="Se déconnecter"><i class="fas fa-right-from-bracket"></i></button>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="head">
+      <div>
+        <h1>Articles</h1>
+        <p class="muted" id="repoInfo"></p>
+      </div>
+      <button class="btn btn-red" id="addBtn"><i class="fas fa-plus"></i> Ajouter un article</button>
+    </div>
+
+    <section class="stats" id="stats"></section>
+
+    <div class="tools">
+      <label class="search"><i class="fas fa-magnifying-glass"></i><input id="q" type="search" placeholder="Rechercher un article…" aria-label="Rechercher un article"></label>
+      <select id="catSel" aria-label="Rayon"><option value="">Tous les rayons</option></select>
+      <div class="chips" id="chips">
+        <button class="chip on" data-v="tous">Tous</button>
+        <button class="chip" data-v="promo">Promos</button>
+        <button class="chip" data-v="nouveau">Nouveautés</button>
+        <button class="chip" data-v="commande">Sur commande</button>
+        <button class="chip" data-v="rupture">Rupture</button>
+        <button class="chip" data-v="masques">Masqués</button>
+        <button class="chip" data-v="modifies">Modifiés</button>
+      </div>
+    </div>
+
+    <div class="list-head" aria-hidden="true"><span></span><span>Article</span><span>Prix</span><span>Disponibilité</span><span>Visible</span><span></span></div>
+    <div class="list" id="list"></div>
+  </main>
+
+  <!-- barre de publication -->
+  <div class="pubbar" id="pubbar" hidden>
+    <div class="pub-txt"><i class="fas fa-pen"></i> <b id="pubCount">0</b> <span id="pubLabel">modification non publiée</span></div>
+    <div class="pub-acts">
+      <button class="btn btn-ghost" id="discardBtn">Annuler</button>
+      <button class="btn btn-red" id="publishBtn"><i class="fas fa-cloud-arrow-up"></i> Publier sur le site</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== FICHE ARTICLE ===================== -->
+<div class="veil" id="veil" hidden></div>
+<aside class="editor" id="editor" aria-label="Fiche article" aria-hidden="true">
+  <div class="ed-head">
+    <h2 id="edTitle">Nouvel article</h2>
+    <button class="ib" id="edClose" aria-label="Fermer"><i class="fas fa-xmark"></i></button>
+  </div>
+  <form class="ed-body" id="edForm" novalidate>
+    <div class="fld">
+      <span>Photos <small class="muted">· la première est la photo principale, 8 au maximum</small></span>
+      <div class="photos" id="photos"></div>
+      <input type="file" id="edFile" accept="image/*" multiple hidden>
+      <small class="muted">Photos nettes, sur fond clair. Elles sont réduites automatiquement.</small>
+    </div>
+
+    <label class="fld"><span>Nom de l'article *</span><input id="fNom" maxlength="100" required></label>
+    <div class="row2">
+      <label class="fld"><span>Rayon</span><select id="fRayon"></select></label>
+      <label class="fld"><span>Marque</span><input id="fMarque" maxlength="40" placeholder="Ex. AZUR, Toro"></label>
+    </div>
+
+    <div class="row2">
+      <label class="fld"><span>Prix de vente (FCFA)</span><input id="fPrix" type="number" inputmode="numeric" min="0" step="100" placeholder="Vide = prix sur demande"></label>
+      <label class="fld"><span>Ancien prix (barré)</span><input id="fAncien" type="number" inputmode="numeric" min="0" step="100" placeholder="Vide = pas d'ancien prix"></label>
+    </div>
+    <p class="hint" id="promoHint" hidden></p>
+
+    <div class="fld"><span>Disponibilité</span>
+      <div class="seg" id="fDispo">
+        <label><input type="radio" name="dispo" value="disponible"><span>Disponible</span></label>
+        <label><input type="radio" name="dispo" value="commande"><span>Sur commande</span></label>
+        <label><input type="radio" name="dispo" value="rupture"><span>Rupture</span></label>
+      </div>
+    </div>
+
+    <div class="fld"><span>Mettre en avant</span>
+      <div class="cases">
+        <label class="check"><input type="checkbox" id="fPromo"><span>Promotion</span></label>
+        <label class="check"><input type="checkbox" id="fNouveau"><span>Nouveauté</span></label>
+        <label class="check"><input type="checkbox" id="fVedette"><span>À la une (showroom de l'accueil)</span></label>
+      </div>
+    </div>
+
+    <label class="switch-line"><span><b>Visible sur le site</b><small>Décochez pour cacher l'article sans le supprimer</small></span><span class="sw"><input type="checkbox" id="fVisible" checked><i></i></span></label>
+
+    <div class="fld">
+      <span>Couleurs ou finitions <small class="muted">· le client choisit sur la fiche</small></span>
+      <div class="specs" id="couleurs"></div>
+      <button type="button" class="link" id="couleurAdd"><i class="fas fa-plus"></i> Ajouter une couleur</button>
+    </div>
+
+    <label class="fld"><span>Description</span><textarea id="fDesc" rows="4" maxlength="1200" placeholder="Ex. Climatiseur split 12 000 BTU, idéal pour une chambre ou un bureau. Installation sur devis."></textarea></label>
+    <p class="hint" id="descHint"></p>
+
+    <div class="serp" aria-live="polite">
+      <span class="serp-lbl"><i class="fab fa-google"></i> Aperçu dans les résultats Google</span>
+      <cite id="serpUrl"></cite>
+      <b id="serpTitle"></b>
+      <p id="serpDesc"></p>
+    </div>
+
+    <div class="fld">
+      <span>Caractéristiques</span>
+      <div class="specs" id="specs"></div>
+      <button type="button" class="link" id="specAdd"><i class="fas fa-plus"></i> Ajouter une caractéristique</button>
+    </div>
+
+    <p class="err" id="edErr" hidden></p>
+  </form>
+  <div class="ed-foot">
+    <button class="btn btn-ghost danger" id="edDelete" type="button" aria-label="Supprimer"><i class="fas fa-trash"></i><span class="del-txt">Supprimer</span></button>
+    <span class="grow"></span>
+    <button class="btn btn-ghost" id="edCancel" type="button">Annuler</button>
+    <button class="btn btn-red" id="edSave" type="button"><i class="fas fa-check"></i> Enregistrer</button>
+  </div>
+</aside>
+
+<!-- ===================== RÉGLAGES ===================== -->
+<aside class="editor" id="seoPanel" aria-label="Réglages de la boutique" aria-hidden="true">
+  <div class="ed-head">
+    <h2>Réglages</h2>
+    <button class="ib" id="seoClose" aria-label="Fermer"><i class="fas fa-xmark"></i></button>
+  </div>
+  <form class="ed-body" id="seoForm" novalidate>
+    <div class="seo-auto">
+      <i class="fas fa-rotate"></i>
+      <p>Ces informations s'affichent sur tout le site : pied de page, fiches produits, questions fréquentes et boutons de contact. À chaque publication, toutes les pages sont refaites (<span id="sPages">0</span> pages produits).</p>
+    </div>
+
+    <h3 class="pan-t">La boutique</h3>
+    <label class="fld"><span>Numéro WhatsApp</span><input id="sWhatsapp" inputmode="tel" maxlength="20" placeholder="Ex. 70 12 34 56"></label>
+    <p class="hint note">Sans numéro WhatsApp, les boutons du site proposent d'appeler le 25 33 34 47.</p>
+    <label class="fld"><span>Horaires d'ouverture</span><textarea id="sHoraires" rows="3" maxlength="300" placeholder="Lundi – samedi : 8 h – 18 h&#10;Dimanche : fermé"></textarea></label>
+    <label class="fld"><span>Livraison</span><textarea id="sLivraison" rows="3" maxlength="600" placeholder="Ex. Livraison à Ouagadougou en 24 à 48 h, tarif selon le quartier."></textarea></label>
+    <label class="fld"><span>Garantie</span><textarea id="sGarantie" rows="2" maxlength="600" placeholder="Ex. Garantie de 6 mois à 1 an selon le produit, facture fournie."></textarea></label>
+    <label class="fld"><span>Moyens de paiement</span><textarea id="sPaiement" rows="2" maxlength="600" placeholder="Ex. Espèces, Orange Money, Moov Money, virement."></textarea></label>
+    <label class="fld"><span>E-mail (facultatif)</span><input id="sEmail" type="email" maxlength="120" placeholder="contact@batipro.bf"></label>
+    <div class="row2">
+      <label class="fld"><span>Page Facebook</span><input id="sFacebook" type="url" maxlength="200" placeholder="https://www.facebook.com/…"></label>
+      <label class="fld"><span>Compte TikTok</span><input id="sTiktok" type="url" maxlength="200" placeholder="https://www.tiktok.com/@…"></label>
+    </div>
+
+    <h3 class="pan-t">Google</h3>
+    <label class="fld"><span>Adresse du site</span><input id="sAdresse" type="url" inputmode="url" spellcheck="false" autocomplete="off"></label>
+    <p class="hint" id="sAdresseHint"></p>
+    <div class="fld">
+      <span>Plan du site à déclarer dans Google Search Console</span>
+      <div class="copy-line"><code id="sSitemap"></code><button type="button" class="btn btn-ghost btn-sm" id="sCopy"><i class="fas fa-copy"></i> Copier</button></div>
+    </div>
+    <label class="fld"><span>Google Search Console : code de validation</span><input id="sGsc" spellcheck="false" autocomplete="off" placeholder="Collez la balise donnée par Google"></label>
+    <label class="fld"><span>Google Analytics : ID de mesure (facultatif)</span><input id="sGa" spellcheck="false" autocomplete="off" placeholder="G-XXXXXXXXXX"></label>
+
+    <p class="err" id="seoErr" hidden></p>
+  </form>
+  <div class="ed-foot">
+    <span class="grow"></span>
+    <button class="btn btn-ghost" id="seoCancel" type="button">Annuler</button>
+    <button class="btn btn-red" id="seoSave" type="button"><i class="fas fa-check"></i> Enregistrer</button>
+  </div>
+</aside>
+
+<!-- ===================== BOÎTE DE CONFIRMATION ===================== -->
+<div class="dialog" id="dialog" role="dialog" aria-modal="true" hidden>
+  <div class="dlg-card">
+    <h3 id="dlgTitle"></h3>
+    <p id="dlgText"></p>
+    <div class="dlg-acts"><button class="btn btn-ghost" id="dlgNo">Annuler</button><button class="btn btn-red" id="dlgYes">Confirmer</button></div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="js/seo-pages.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>
