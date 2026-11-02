@@ -1,5 +1,5 @@
 User-agent: *
 Allow: /
-Disallow: /admin.html
+Disallow: /batipro/admin.html
 
-Sitemap: https://www.batipro.bf/sitemap.xml
+Sitemap: https://mandestephane5-creator.github.io/batipro/sitemap.xml
